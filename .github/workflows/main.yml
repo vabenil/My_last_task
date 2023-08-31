@@ -1,0 +1,22 @@
+name: Upload index.html to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Upload index.html
+        run: scp -o StrictHostKeyChecking=no -i $SSH_AUTH_SOCK index.html ubuntu@${{ secrets.EC2_HOST }}:/var/www/html/index.html
