@@ -17,6 +17,9 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
+          
+      # Use scp to send index.html over the http protocol
+      # -o is so that we don't get prompted to answer whether we trust the host or not
+      # -i specifies the location of the private key file which in this case is set to the env variable `SSH_AUTH_SOCK`
       - name: Upload index.html
         run: scp -o StrictHostKeyChecking=no -i $SSH_AUTH_SOCK index.html ubuntu@${{ secrets.EC2_HOST }}:/var/www/html/index.html
