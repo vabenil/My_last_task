@@ -1,0 +1,23 @@
+---
+- hosts: web
+  become: true
+  tasks:
+    - name: Update & Upgrade
+      apt:
+        update_cache: yes
+        upgrade: yes
+
+    - name: Install nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Set html directory owner
+      file:
+        path: /var/www/html/
+        owner: ubuntu
+        recurse: yes
+
+    - name:
+      debug:
+        msg: "Everything worked alright!"
